@@ -1,0 +1,22 @@
+{
+  "name": "thecadien/sulu-import-export-bundle",
+  "type": "sulu-bundle",
+  "description": "Import/Export Bundle for Sulu 2 CMS",
+  "keywords": ["sulu","suluCms","import","export"],
+  "homepage": "https://github.com/TheCadien/SuluImportExportBundle",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Oliver Kossin"
+    }
+  ],
+  "require": {
+    "php": "^7.3",
+    "sulu/sulu": "^2.0.1"
+  },
+  "autoload": {
+    "psr-4": {
+      "TheCadien\\Bundle\\SuluImportExportBundle\\": ""
+    }
+  }
+}
