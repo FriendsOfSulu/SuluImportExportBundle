@@ -1,7 +1,17 @@
 <?php
 
-namespace App\Bundles\SuluImportExportBundle\Command;
+declare(strict_types=1);
 
+/*
+ * This file is part of TheCadien/SuluImportExportBundle.
+ *
+ * (c) Oliver Kossin
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
+
+namespace App\Bundles\SuluImportExportBundle\Command;
 
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\ProgressBar;
@@ -55,35 +65,37 @@ class ExportCommand extends Command
         $this->exportDirectory = $exportDirectory;
         $this->uploadsDirectory = $uploadsDirectory;
     }
+
     protected function configure()
     {
         $this
-            ->setName("sulu:export")
-            ->setDescription("Exports all Sulu contents (PHPCR, database, uploads) to the web directory.");
+            ->setName('sulu:export')
+            ->setDescription('Exports all Sulu contents (PHPCR, database, uploads) to the web directory.');
     }
+
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $this->input = $input;
         $this->output = $output;
         $this->progressBar = new ProgressBar($this->output, 3);
-        $this->progressBar->setFormat("%current%/%max% [%bar%] %percent:3s%% <info>%message%</info>");
+        $this->progressBar->setFormat('%current%/%max% [%bar%] %percent:3s%% <info>%message%</info>');
         $this->exportPHPCR();
         $this->exportDatabase();
         $this->exportUploads();
         $this->progressBar->finish();
         $this->output->writeln(
-            PHP_EOL . "<info>Successfully exported contents.</info>"
+            PHP_EOL . '<info>Successfully exported contents.</info>'
         );
     }
 
     private function exportPHPCR()
     {
-        $this->progressBar->setMessage("Exporting PHPCR repository...");
+        $this->progressBar->setMessage('Exporting PHPCR repository...');
         $this->executeCommand(
-            "doctrine:phpcr:workspace:export",
+            'doctrine:phpcr:workspace:export',
             [
-                "-p" => "/cmf",
-                "filename" => $this->exportDirectory . DIRECTORY_SEPARATOR . self::FILENAME_PHPCR
+                '-p' => '/cmf',
+                'filename' => $this->exportDirectory . \DIRECTORY_SEPARATOR . self::FILENAME_PHPCR,
             ]
         );
         $this->progressBar->advance();
@@ -91,11 +103,11 @@ class ExportCommand extends Command
 
     private function exportDatabase()
     {
-        $this->progressBar->setMessage("Exporting database...");
+        $this->progressBar->setMessage('Exporting database...');
         $command =
             "mysqldump -h {$this->databaseHost} -u " . escapeshellarg($this->databaseUser) .
-            ($this->databasePassword ? " -p" . escapeshellarg($this->databasePassword) : "") .
-            " " . escapeshellarg($this->databaseName) . " > " . $this->exportDirectory . DIRECTORY_SEPARATOR . self::FILENAME_SQL;
+            ($this->databasePassword ? ' -p' . escapeshellarg($this->databasePassword) : '') .
+            ' ' . escapeshellarg($this->databaseName) . ' > ' . $this->exportDirectory . \DIRECTORY_SEPARATOR . self::FILENAME_SQL;
 
         $process = new Process($command);
         $process->run();
@@ -104,12 +116,13 @@ class ExportCommand extends Command
             throw new ProcessFailedException($process);
         }
     }
+
     private function exportUploads()
     {
-        $this->progressBar->setMessage("Exporting uploads...");
+        $this->progressBar->setMessage('Exporting uploads...');
         // Directory path with new Symfony directory structure - i.e. var/uploads.
         $process = new Process(
-            "tar cvf " . $this->exportDirectory . DIRECTORY_SEPARATOR  . self::FILENAME_UPLOADS . " {$this->uploadsDirectory}"
+            'tar cvf ' . $this->exportDirectory . \DIRECTORY_SEPARATOR . self::FILENAME_UPLOADS . " {$this->uploadsDirectory}"
         );
         $process->setTimeout(300);
         $process->run();
@@ -118,12 +131,13 @@ class ExportCommand extends Command
             throw new ProcessFailedException($process);
         }
     }
+
     private function executeCommand($cmd, array $params)
     {
         $command = $this->getApplication()->find($cmd);
         $command->run(
             new ArrayInput(
-                ["command" => $cmd] + $params
+                ['command' => $cmd] + $params
             ),
             new NullOutput()
         );

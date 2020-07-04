@@ -1,6 +1,17 @@
 <?php
-namespace App\Bundles\SuluImportExportBundle\Command;
 
+declare(strict_types=1);
+
+/*
+ * This file is part of TheCadien/SuluImportExportBundle.
+ *
+ * (c) Oliver Kossin
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
+
+namespace App\Bundles\SuluImportExportBundle\Command;
 
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\ProgressBar;
@@ -58,20 +69,21 @@ class ImportCommand extends Command
     protected function configure()
     {
         $this
-            ->setName("sulu:import")
-            ->setDescription("Imports contents exported with the sulu:export command from the remote host.")
+            ->setName('sulu:import')
+            ->setDescription('Imports contents exported with the sulu:export command from the remote host.')
             ->addOption(
-                "add-assets",
+                'add-assets',
                 null,
                 null,
-                "Add assets."
+                'Add assets.'
             );
     }
+
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $this->input = $input;
         $this->output = $output;
-        $skipAssets = $this->input->getOption("add-assets");
+        $skipAssets = $this->input->getOption('add-assets');
         $this->progressBar = new ProgressBar($this->output, $skipAssets ? 4 : 6);
         $this->progressBar->setFormat(' %current%/%max% [%bar%] %percent:3s%% <info>%message%</info>');
         $this->importPHPCR();
@@ -87,30 +99,31 @@ class ImportCommand extends Command
 
     private function importPHPCR()
     {
-        $this->progressBar->setMessage("Importing PHPCR repository...");
+        $this->progressBar->setMessage('Importing PHPCR repository...');
         $this->executeCommand(
-            "doctrine:phpcr:workspace:purge",
+            'doctrine:phpcr:workspace:purge',
             [
-                "--force" => true,
+                '--force' => true,
             ],
             new NullOutput()
         );
         $this->executeCommand(
-            "doctrine:phpcr:workspace:import",
+            'doctrine:phpcr:workspace:import',
             [
-                "filename" => $this->importDirectory . DIRECTORY_SEPARATOR . self::FILENAME_PHPCR
+                'filename' => $this->importDirectory . \DIRECTORY_SEPARATOR . self::FILENAME_PHPCR,
             ],
             new NullOutput()
         );
         $this->progressBar->advance();
     }
+
     private function importDatabase()
     {
-        $this->progressBar->setMessage("Importing database...");
+        $this->progressBar->setMessage('Importing database...');
         $command =
             "mysql -h {$this->databaseHost} -u " . escapeshellarg($this->databaseUser) .
-            ($this->databasePassword ? " -p" . escapeshellarg($this->databasePassword) : "") .
-            " " . escapeshellarg($this->databaseName) . " < " . $this->importDirectory . DIRECTORY_SEPARATOR . self::FILENAME_SQL;
+            ($this->databasePassword ? ' -p' . escapeshellarg($this->databasePassword) : '') .
+            ' ' . escapeshellarg($this->databaseName) . ' < ' . $this->importDirectory . \DIRECTORY_SEPARATOR . self::FILENAME_SQL;
         $process = new Process($command);
         $process->run();
         $this->progressBar->advance();
@@ -118,11 +131,12 @@ class ImportCommand extends Command
             throw new ProcessFailedException($process);
         }
     }
+
     private function importUploads()
     {
-        $this->progressBar->setMessage("Importing uploads...");
-        $filename = $this->importDirectory . DIRECTORY_SEPARATOR . self::FILENAME_UPLOADS;
-        $path = $this->uploadsDirectory . DIRECTORY_SEPARATOR;
+        $this->progressBar->setMessage('Importing uploads...');
+        $filename = $this->importDirectory . \DIRECTORY_SEPARATOR . self::FILENAME_UPLOADS;
+        $path = $this->uploadsDirectory . \DIRECTORY_SEPARATOR;
         $process = new Process("tar -xvf {$filename} {$path}");
         $process->run();
         $this->progressBar->advance();
@@ -130,15 +144,15 @@ class ImportCommand extends Command
             throw new ProcessFailedException($process);
         }
     }
+
     private function executeCommand($cmd, array $params, OutputInterface $output)
     {
         $command = $this->getApplication()->find($cmd);
         $command->run(
             new ArrayInput(
-                ["command" => $cmd] + $params
+                ['command' => $cmd] + $params
             ),
             $output
         );
     }
-
 }
