@@ -124,7 +124,7 @@ class ImportCommand extends Command
             "mysql -h {$this->databaseHost} -u " . escapeshellarg($this->databaseUser) .
             ($this->databasePassword ? ' -p' . escapeshellarg($this->databasePassword) : '') .
             ' ' . escapeshellarg($this->databaseName) . ' < ' . $this->importDirectory . \DIRECTORY_SEPARATOR . self::FILENAME_SQL;
-        $process = new Process($command);
+        $process = Process::fromShellCommandline($command);
         $process->run();
         $this->progressBar->advance();
         if (!$process->isSuccessful()) {
@@ -137,7 +137,7 @@ class ImportCommand extends Command
         $this->progressBar->setMessage('Importing uploads...');
         $filename = $this->importDirectory . \DIRECTORY_SEPARATOR . self::FILENAME_UPLOADS;
         $path = $this->uploadsDirectory . \DIRECTORY_SEPARATOR;
-        $process = new Process("tar -xvf {$filename} {$path}");
+        $process = Process::fromShellCommandline("tar -xvf {$filename} {$path}");
         $process->run();
         $this->progressBar->advance();
         if (!$process->isSuccessful()) {

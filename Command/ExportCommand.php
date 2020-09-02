@@ -109,7 +109,7 @@ class ExportCommand extends Command
             ($this->databasePassword ? ' -p' . escapeshellarg($this->databasePassword) : '') .
             ' ' . escapeshellarg($this->databaseName) . ' > ' . $this->exportDirectory . \DIRECTORY_SEPARATOR . self::FILENAME_SQL;
 
-        $process = new Process($command);
+        $process = Process::fromShellCommandline($command);
         $process->run();
         $this->progressBar->advance();
         if (!$process->isSuccessful()) {
@@ -121,7 +121,7 @@ class ExportCommand extends Command
     {
         $this->progressBar->setMessage('Exporting uploads...');
         // Directory path with new Symfony directory structure - i.e. var/uploads.
-        $process = new Process(
+        $process = Process::fromShellCommandline(
             'tar cvf ' . $this->exportDirectory . \DIRECTORY_SEPARATOR . self::FILENAME_UPLOADS . " {$this->uploadsDirectory}"
         );
         $process->setTimeout(300);
