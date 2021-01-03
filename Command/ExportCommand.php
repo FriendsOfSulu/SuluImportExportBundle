@@ -21,15 +21,10 @@ use Symfony\Component\Console\Output\NullOutput;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 use Symfony\Component\Process\Process;
+use TheCadien\Bundle\SuluImportExportBundle\Helper\ImportExportDefaultMap;
 
 class ExportCommand extends Command
 {
-    const FILENAME_PHPCR = 'export.phpcr';
-
-    const FILENAME_SQL = 'export.sql';
-
-    const FILENAME_UPLOADS = 'uploads.tar.gz';
-
     /**
      * @var InputInterface
      */
@@ -63,7 +58,7 @@ class ExportCommand extends Command
         $this->databaseName = $databaseName;
         $this->databasePassword = $databasePassword;
         $this->exportDirectory = $exportDirectory;
-        $this->uploadsDirectory = $uploadsDirectory;
+        $this->uploadsDirectory = ($uploadsDirectory) ?: ImportExportDefaultMap::SULU_DEFAULT_MEDIA_PATH;
     }
 
     protected function configure()
@@ -95,7 +90,7 @@ class ExportCommand extends Command
             'doctrine:phpcr:workspace:export',
             [
                 '-p' => '/cmf',
-                'filename' => $this->exportDirectory . \DIRECTORY_SEPARATOR . self::FILENAME_PHPCR,
+                'filename' => $this->exportDirectory . \DIRECTORY_SEPARATOR . ImportExportDefaultMap::FILENAME_PHPCR,
             ]
         );
         $this->progressBar->advance();
@@ -107,7 +102,7 @@ class ExportCommand extends Command
         $command =
             "mysqldump -h {$this->databaseHost} -u " . escapeshellarg($this->databaseUser) .
             ($this->databasePassword ? ' -p' . escapeshellarg($this->databasePassword) : '') .
-            ' ' . escapeshellarg($this->databaseName) . ' > ' . $this->exportDirectory . \DIRECTORY_SEPARATOR . self::FILENAME_SQL;
+            ' ' . escapeshellarg($this->databaseName) . ' > ' . $this->exportDirectory . \DIRECTORY_SEPARATOR . ImportExportDefaultMap::FILENAME_SQL;
 
         $process = Process::fromShellCommandline($command);
         $process->run();
@@ -122,7 +117,7 @@ class ExportCommand extends Command
         $this->progressBar->setMessage('Exporting uploads...');
         // Directory path with new Symfony directory structure - i.e. var/uploads.
         $process = Process::fromShellCommandline(
-            'tar cvf ' . $this->exportDirectory . \DIRECTORY_SEPARATOR . self::FILENAME_UPLOADS . " {$this->uploadsDirectory}"
+            'tar cvf ' . $this->exportDirectory . \DIRECTORY_SEPARATOR . ImportExportDefaultMap::FILENAME_UPLOADS . " {$this->uploadsDirectory}"
         );
         $process->setTimeout(300);
         $process->run();

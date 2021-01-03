@@ -21,15 +21,10 @@ use Symfony\Component\Console\Output\NullOutput;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 use Symfony\Component\Process\Process;
+use TheCadien\Bundle\SuluImportExportBundle\Helper\ImportExportDefaultMap;
 
 class ImportCommand extends Command
 {
-    const FILENAME_PHPCR = 'export.phpcr';
-
-    const FILENAME_SQL = 'export.sql';
-
-    const FILENAME_UPLOADS = 'uploads.tar.gz';
-
     /**
      * @var InputInterface
      */
@@ -49,6 +44,9 @@ class ImportCommand extends Command
     private $importDirectory;
     private $uploadsDirectory;
 
+    /**
+     * ImportCommand constructor.
+     */
     public function __construct(
         string $databaseHost,
         string $databaseName,
@@ -63,7 +61,7 @@ class ImportCommand extends Command
         $this->databaseName = $databaseName;
         $this->databasePassword = $databasePassword;
         $this->importDirectory = $importDirectory;
-        $this->uploadsDirectory = $uploadsDirectory;
+        $this->uploadsDirectory = ($uploadsDirectory) ?: ImportExportDefaultMap::SULU_DEFAULT_MEDIA_PATH;
     }
 
     protected function configure()
@@ -110,7 +108,7 @@ class ImportCommand extends Command
         $this->executeCommand(
             'doctrine:phpcr:workspace:import',
             [
-                'filename' => $this->importDirectory . \DIRECTORY_SEPARATOR . self::FILENAME_PHPCR,
+                'filename' => $this->importDirectory . \DIRECTORY_SEPARATOR . ImportExportDefaultMap::FILENAME_PHPCR,
             ],
             new NullOutput()
         );
@@ -123,7 +121,7 @@ class ImportCommand extends Command
         $command =
             "mysql -h {$this->databaseHost} -u " . escapeshellarg($this->databaseUser) .
             ($this->databasePassword ? ' -p' . escapeshellarg($this->databasePassword) : '') .
-            ' ' . escapeshellarg($this->databaseName) . ' < ' . $this->importDirectory . \DIRECTORY_SEPARATOR . self::FILENAME_SQL;
+            ' ' . escapeshellarg($this->databaseName) . ' < ' . $this->importDirectory . \DIRECTORY_SEPARATOR . ImportExportDefaultMap::FILENAME_SQL;
         $process = Process::fromShellCommandline($command);
         $process->run();
         $this->progressBar->advance();
@@ -135,7 +133,7 @@ class ImportCommand extends Command
     private function importUploads()
     {
         $this->progressBar->setMessage('Importing uploads...');
-        $filename = $this->importDirectory . \DIRECTORY_SEPARATOR . self::FILENAME_UPLOADS;
+        $filename = $this->importDirectory . \DIRECTORY_SEPARATOR . ImportExportDefaultMap::FILENAME_UPLOADS;
         $path = $this->uploadsDirectory . \DIRECTORY_SEPARATOR;
         $process = Process::fromShellCommandline("tar -xvf {$filename} {$path}");
         $process->run();
