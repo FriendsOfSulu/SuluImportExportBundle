@@ -1,7 +1,7 @@
 ##Requirements
 
-* PHP 7.3
-* Sulu 2.0.*
+* PHP >= 7.3 
+* Sulu 2.*
 * Symfony 4.4 or 5.*
 
 
