@@ -8,7 +8,7 @@
             <argument key="$databaseUser">%env(DATABASE_USER)%</argument>
             <argument key="$databaseName">%env(DATABASE_NAME)%</argument>
             <argument key="$databasePassword">%env(DATABASE_PASSWORD)%</argument>
-            <argument key="$importDirectory">%kernel.project_dir%</argument>
+            <argument key="$exportDirectory">%kernel.project_dir%</argument>
             <argument key="$uploadsDirectory">%env(MEDIA_PATH)%</argument>
             <argument key="$executeService" type="service" id="sulu.service.execute"/>
         </service>
@@ -17,7 +17,7 @@
             <argument key="$databaseUser">%env(DATABASE_USER)%</argument>
             <argument key="$databaseName">%env(DATABASE_NAME)%</argument>
             <argument key="$databasePassword">%env(DATABASE_PASSWORD)%</argument>
-            <argument key="$exportDirectory">%kernel.project_dir%</argument>
+            <argument key="$importDirectory">%kernel.project_dir%</argument>
             <argument key="$uploadsDirectory">%env(MEDIA_PATH)%</argument>
             <argument key="$executeService" type="service" id="sulu.service.execute"/>
         </service>
