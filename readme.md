@@ -37,4 +37,22 @@ DATABASE_USER='user'
 DATABASE_PASSWORD='password'
 DATABASE_NAME='db-name'
 MEDIA_PATH='var/uploads/media'
+
+IMPORT_DIR='var/import/'
+EXPORT_DIR='var/export/'
+ ```
+
+
+
+##UPGRADE
+
+###1.1.1
+
+Since version 1.1.1 it should be possible to change the path of the export and import easily.
+For this the ENV must be extended by the following variables.
+To map the same function as in the 1.0.0 version it is sufficient to leave the variables empty.
+
+ ```dotenv
+IMPORT_DIR=
+EXPORT_DIR=
  ```
