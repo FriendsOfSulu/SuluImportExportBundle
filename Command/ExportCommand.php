@@ -15,13 +15,9 @@ namespace TheCadien\Bundle\SuluImportExportBundle\Command;
 
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\ProgressBar;
-use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\NullOutput;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Process\Exception\ProcessFailedException;
-use Symfony\Component\Process\Process;
-use TheCadien\Bundle\SuluImportExportBundle\Helper\ImportExportDefaultMap;
+use TheCadien\Bundle\SuluImportExportBundle\Service\ExportInterface;
 
 class ExportCommand extends Command
 {
@@ -37,28 +33,17 @@ class ExportCommand extends Command
      * @var ProgressBar
      */
     private $progressBar;
-    private $databaseHost;
-    private $databaseUser;
-    private $databaseName;
-    private $databasePassword;
-    private $exportDirectory;
-    private $uploadsDirectory;
+
+    /**
+     * @var ExportInterface
+     */
+    private $exportService;
 
     public function __construct(
-        string $databaseHost,
-        string $databaseName,
-        string $databaseUser,
-        string $databasePassword,
-        string $exportDirectory,
-        string $uploadsDirectory
+        ExportInterface $exportService
     ) {
         parent::__construct();
-        $this->databaseHost = $databaseHost;
-        $this->databaseUser = $databaseUser;
-        $this->databaseName = $databaseName;
-        $this->databasePassword = $databasePassword;
-        $this->exportDirectory = $exportDirectory;
-        $this->uploadsDirectory = ($uploadsDirectory) ?: ImportExportDefaultMap::SULU_DEFAULT_MEDIA_PATH;
+        $this->exportService = $exportService;
     }
 
     protected function configure()
@@ -74,67 +59,22 @@ class ExportCommand extends Command
         $this->output = $output;
         $this->progressBar = new ProgressBar($this->output, 3);
         $this->progressBar->setFormat('%current%/%max% [%bar%] %percent:3s%% <info>%message%</info>');
-        $this->exportPHPCR();
-        $this->exportDatabase();
-        $this->exportUploads();
+
+        $this->progressBar->setMessage('Exporting PHPCR repository...');
+        $this->exportService->exportPHPCR();
+        $this->progressBar->advance();
+
+        $this->progressBar->setMessage('Exporting database...');
+        $this->exportService->exportDatabase();
+        $this->progressBar->advance();
+
+        $this->progressBar->setMessage('Exporting uploads...');
+        $this->exportService->exportUploads();
+        $this->progressBar->advance();
+
         $this->progressBar->finish();
         $this->output->writeln(
-            PHP_EOL . '<info>Successfully exported contents.</info>'
-        );
-    }
-
-    private function exportPHPCR()
-    {
-        $this->progressBar->setMessage('Exporting PHPCR repository...');
-        $this->executeCommand(
-            'doctrine:phpcr:workspace:export',
-            [
-                '-p' => '/cmf',
-                'filename' => $this->exportDirectory . \DIRECTORY_SEPARATOR . ImportExportDefaultMap::FILENAME_PHPCR,
-            ]
-        );
-        $this->progressBar->advance();
-    }
-
-    private function exportDatabase()
-    {
-        $this->progressBar->setMessage('Exporting database...');
-        $command =
-            "mysqldump -h {$this->databaseHost} -u " . escapeshellarg($this->databaseUser) .
-            ($this->databasePassword ? ' -p' . escapeshellarg($this->databasePassword) : '') .
-            ' ' . escapeshellarg($this->databaseName) . ' > ' . $this->exportDirectory . \DIRECTORY_SEPARATOR . ImportExportDefaultMap::FILENAME_SQL;
-
-        $process = Process::fromShellCommandline($command);
-        $process->run();
-        $this->progressBar->advance();
-        if (!$process->isSuccessful()) {
-            throw new ProcessFailedException($process);
-        }
-    }
-
-    private function exportUploads()
-    {
-        $this->progressBar->setMessage('Exporting uploads...');
-        // Directory path with new Symfony directory structure - i.e. var/uploads.
-        $process = Process::fromShellCommandline(
-            'tar cvf ' . $this->exportDirectory . \DIRECTORY_SEPARATOR . ImportExportDefaultMap::FILENAME_UPLOADS . " {$this->uploadsDirectory}"
-        );
-        $process->setTimeout(300);
-        $process->run();
-        $this->progressBar->advance();
-        if (!$process->isSuccessful()) {
-            throw new ProcessFailedException($process);
-        }
-    }
-
-    private function executeCommand($cmd, array $params)
-    {
-        $command = $this->getApplication()->find($cmd);
-        $command->run(
-            new ArrayInput(
-                ['command' => $cmd] + $params
-            ),
-            new NullOutput()
+            \PHP_EOL . '<info>Successfully exported contents.</info>'
         );
     }
 }
