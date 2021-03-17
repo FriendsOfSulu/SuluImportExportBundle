@@ -40,7 +40,6 @@ class ExportService implements ExportInterface
         string $uploadsDirectory,
         ExecuteService $executeService
     ) {
-        parent::__construct();
         $this->databaseHost = $databaseHost;
         $this->databaseUser = $databaseUser;
         $this->databaseName = $databaseName;
