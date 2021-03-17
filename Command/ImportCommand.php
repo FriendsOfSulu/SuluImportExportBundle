@@ -15,13 +15,9 @@ namespace TheCadien\Bundle\SuluImportExportBundle\Command;
 
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\ProgressBar;
-use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\NullOutput;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Process\Exception\ProcessFailedException;
-use Symfony\Component\Process\Process;
-use TheCadien\Bundle\SuluImportExportBundle\Helper\ImportExportDefaultMap;
+use TheCadien\Bundle\SuluImportExportBundle\Service\ImportInterface;
 
 class ImportCommand extends Command
 {
@@ -37,31 +33,20 @@ class ImportCommand extends Command
      * @var ProgressBar
      */
     private $progressBar;
-    private $databaseHost;
-    private $databaseUser;
-    private $databaseName;
-    private $databasePassword;
-    private $importDirectory;
-    private $uploadsDirectory;
+
+    /**
+     * @var ImportInterface
+     */
+    private $importService;
 
     /**
      * ImportCommand constructor.
      */
     public function __construct(
-        string $databaseHost,
-        string $databaseName,
-        string $databaseUser,
-        string $databasePassword,
-        string $importDirectory,
-        string $uploadsDirectory
+        ImportInterface $importService
     ) {
         parent::__construct();
-        $this->databaseHost = $databaseHost;
-        $this->databaseUser = $databaseUser;
-        $this->databaseName = $databaseName;
-        $this->databasePassword = $databasePassword;
-        $this->importDirectory = $importDirectory;
-        $this->uploadsDirectory = ($uploadsDirectory) ?: ImportExportDefaultMap::SULU_DEFAULT_MEDIA_PATH;
+        $this->importService = $importService;
     }
 
     protected function configure()
@@ -84,73 +69,24 @@ class ImportCommand extends Command
         $skipAssets = $this->input->getOption('add-assets');
         $this->progressBar = new ProgressBar($this->output, $skipAssets ? 4 : 6);
         $this->progressBar->setFormat(' %current%/%max% [%bar%] %percent:3s%% <info>%message%</info>');
-        $this->importPHPCR();
-        $this->importDatabase();
+
+        $this->progressBar->setMessage('Importing PHPCR repository...');
+        $this->importService->importPHPCR();
+        $this->progressBar->advance();
+
+        $this->progressBar->setMessage('Importing database...');
+        $this->importService->importDatabase();
+        $this->progressBar->advance();
+
         if ($skipAssets) {
-            $this->importUploads();
+            $this->progressBar->setMessage('Importing uploads...');
+            $this->importService->importUploads();
+            $this->progressBar->advance();
         }
+
         $this->progressBar->finish();
         $this->output->writeln(
-            PHP_EOL . "<info>Successfully imported contents. You're good to go!</info>"
-        );
-    }
-
-    private function importPHPCR()
-    {
-        $this->progressBar->setMessage('Importing PHPCR repository...');
-        $this->executeCommand(
-            'doctrine:phpcr:workspace:purge',
-            [
-                '--force' => true,
-            ],
-            new NullOutput()
-        );
-        $this->executeCommand(
-            'doctrine:phpcr:workspace:import',
-            [
-                'filename' => $this->importDirectory . \DIRECTORY_SEPARATOR . ImportExportDefaultMap::FILENAME_PHPCR,
-            ],
-            new NullOutput()
-        );
-        $this->progressBar->advance();
-    }
-
-    private function importDatabase()
-    {
-        $this->progressBar->setMessage('Importing database...');
-        $command =
-            "mysql -h {$this->databaseHost} -u " . escapeshellarg($this->databaseUser) .
-            ($this->databasePassword ? ' -p' . escapeshellarg($this->databasePassword) : '') .
-            ' ' . escapeshellarg($this->databaseName) . ' < ' . $this->importDirectory . \DIRECTORY_SEPARATOR . ImportExportDefaultMap::FILENAME_SQL;
-        $process = Process::fromShellCommandline($command);
-        $process->run();
-        $this->progressBar->advance();
-        if (!$process->isSuccessful()) {
-            throw new ProcessFailedException($process);
-        }
-    }
-
-    private function importUploads()
-    {
-        $this->progressBar->setMessage('Importing uploads...');
-        $filename = $this->importDirectory . \DIRECTORY_SEPARATOR . ImportExportDefaultMap::FILENAME_UPLOADS;
-        $path = $this->uploadsDirectory . \DIRECTORY_SEPARATOR;
-        $process = Process::fromShellCommandline("tar -xvf {$filename} {$path}");
-        $process->run();
-        $this->progressBar->advance();
-        if (!$process->isSuccessful()) {
-            throw new ProcessFailedException($process);
-        }
-    }
-
-    private function executeCommand($cmd, array $params, OutputInterface $output)
-    {
-        $command = $this->getApplication()->find($cmd);
-        $command->run(
-            new ArrayInput(
-                ['command' => $cmd] + $params
-            ),
-            $output
+            \PHP_EOL . "<info>Successfully imported contents. You're good to go!</info>"
         );
     }
 }
