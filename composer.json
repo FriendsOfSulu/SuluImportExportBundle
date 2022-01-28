@@ -11,13 +11,13 @@
     }
   ],
   "require": {
-    "php": "^7.3",
+    "php": "^7.3|^8.0",
     "sulu/sulu": "^2.0.1",
-    "symfony/config": "^4.3 || ^5.0",
-    "symfony/dependency-injection": "^4.3 || ^5.0",
+    "symfony/config": "^4.3 || ^5.0 || ^6.0",
+    "symfony/dependency-injection": "^4.3 || ^5.0 || ^6.0",
     "symfony/framework-bundle": "^4.3 || ^5.0",
-    "symfony/http-foundation": "^4.3 || ^5.0",
-    "symfony/http-kernel": "^4.3 || ^5.0.7"
+    "symfony/http-foundation": "^4.3 || ^5.0 || ^6.0",
+    "symfony/http-kernel": "^4.3 || ^5.0.7 || ^6.0"
   },
   "require-dev": {
     "coduo/php-matcher": "^4.0",
@@ -30,10 +30,10 @@
     "phpstan/phpstan-phpunit": "^0.12",
     "phpstan/phpstan-symfony": "^0.12",
     "phpunit/phpunit": "^8.0",
-    "symfony/browser-kit": "^4.3 || ^5.0",
-    "symfony/console": "^4.3 || ^5.0",
-    "symfony/dotenv": "^4.3 || ^5.0",
-    "symfony/error-handler": "^4.4 || ^5.0",
+    "symfony/browser-kit": "^4.3 || ^5.0 || ^6.0",
+    "symfony/console": "^4.3 || ^5.0 || ^6.0",
+    "symfony/dotenv": "^4.3 || ^5.0 || ^6.0",
+    "symfony/error-handler": "^4.4 || ^5.0 || ^6.0",
     "symfony/monolog-bundle": "^3.1",
     "thecodingmachine/phpstan-strict-rules": "^0.12"
   },
@@ -50,6 +50,11 @@
   "autoload": {
     "psr-4": {
       "TheCadien\\Bundle\\SuluImportExportBundle\\": ""
+    }
+  },
+  "config": {
+    "allow-plugins": {
+      "composer/package-versions-deprecated": true
     }
   }
 }
