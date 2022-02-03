@@ -2,7 +2,7 @@
 
 * PHP >= 7.3 
 * Sulu 2.*
-* Symfony 4.4 or 5.*
+* Symfony 4.4 / 5.* / 6
 
 
 ### Install the bundle 
