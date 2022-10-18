@@ -15,7 +15,7 @@
     "sulu/sulu": "^2.0.1",
     "symfony/config": "^4.3 || ^5.0 || ^6.0",
     "symfony/dependency-injection": "^4.3 || ^5.0 || ^6.0",
-    "symfony/framework-bundle": "^4.3 || ^5.0",
+    "symfony/framework-bundle": "^4.3 || ^5.0 || ^6.0",
     "symfony/http-foundation": "^4.3 || ^5.0 || ^6.0",
     "symfony/http-kernel": "^4.3 || ^5.0.7 || ^6.0"
   },
