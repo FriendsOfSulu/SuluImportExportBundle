@@ -33,6 +33,8 @@ class SuluImportExportExtension extends Extension
         $configuration = new Configuration();
         $config = $this->processConfiguration($configuration, $configs);
 
+        $container->setParameter('sulu_import_export_bundle.dbal_connection', $config['dbal_connection']);
+
         $loader = new Loader\XmlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
         $loader->load('command.xml');
         $loader->load('services.xml');

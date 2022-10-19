@@ -12,6 +12,7 @@
   ],
   "require": {
     "php": "^7.3|^8.0",
+    "doctrine/doctrine-bundle": ">=1.0",
     "sulu/sulu": "^2.0.1",
     "symfony/config": "^4.3 || ^5.0 || ^6.0",
     "symfony/dependency-injection": "^4.3 || ^5.0 || ^6.0",
