@@ -88,5 +88,7 @@ class ImportCommand extends Command
         $this->output->writeln(
             \PHP_EOL . "<info>Successfully imported contents. You're good to go!</info>"
         );
+
+        return 0;
     }
 }

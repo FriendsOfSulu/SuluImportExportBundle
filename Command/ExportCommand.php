@@ -76,5 +76,7 @@ class ExportCommand extends Command
         $this->output->writeln(
             \PHP_EOL . '<info>Successfully exported contents.</info>'
         );
+
+        return 0;
     }
 }
