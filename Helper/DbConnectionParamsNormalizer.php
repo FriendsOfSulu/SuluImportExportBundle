@@ -57,7 +57,7 @@ class DbConnectionParamsNormalizer
             'host' => $urlParts['host'] ?? 'localhost',
             'user' => $urlParts['user'],
             'dbname' => substr($urlParts['path'], 1),
-            'password' => $urlParts['password'] ?? null,
+            'password' => $urlParts['pass'] ?? null,
         ];
     }
 }
