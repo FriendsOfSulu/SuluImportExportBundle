@@ -4,19 +4,13 @@
            xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
     <services>
         <service id="sulu.service.export" class="TheCadien\Bundle\SuluImportExportBundle\Service\ExportService">
-            <argument key="$databaseHost">%env(DATABASE_HOST)%</argument>
-            <argument key="$databaseUser">%env(DATABASE_USER)%</argument>
-            <argument key="$databaseName">%env(DATABASE_NAME)%</argument>
-            <argument key="$databasePassword">%env(DATABASE_PASSWORD)%</argument>
+            <argument key="$databaseParams"><!-- dynamically set per DbConnectionPass --></argument>
             <argument key="$exportDirectory">%kernel.project_dir%/%env(EXPORT_DIR)%</argument>
             <argument key="$uploadsDirectory">%env(MEDIA_PATH)%</argument>
             <argument key="$executeService" type="service" id="sulu.service.execute"/>
         </service>
         <service id="sulu.service.import" class="TheCadien\Bundle\SuluImportExportBundle\Service\ImportService">
-            <argument key="$databaseHost">%env(DATABASE_HOST)%</argument>
-            <argument key="$databaseUser">%env(DATABASE_USER)%</argument>
-            <argument key="$databaseName">%env(DATABASE_NAME)%</argument>
-            <argument key="$databasePassword">%env(DATABASE_PASSWORD)%</argument>
+            <argument key="$databaseParams"><!-- dynamically set per DbConnectionPass --></argument>
             <argument key="$importDirectory">%kernel.project_dir%/%env(IMPORT_DIR)%</argument>
             <argument key="$uploadsDirectory">%env(MEDIA_PATH)%</argument>
             <argument key="$executeService" type="service" id="sulu.service.execute"/>

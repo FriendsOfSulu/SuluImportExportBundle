@@ -28,6 +28,14 @@ class Configuration implements ConfigurationInterface
     {
         $treeBuilder = new TreeBuilder('import_export_bundle');
 
+        $rootNode = $treeBuilder->getRootNode();
+        $rootNode
+            ->children()
+                ->scalarNode('dbal_connection')
+                    ->defaultNull()
+                ->end()
+            ->end();
+
         return $treeBuilder;
     }
 }

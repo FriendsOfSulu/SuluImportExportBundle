@@ -16,6 +16,7 @@ namespace TheCadien\Bundle\SuluImportExportBundle\Service;
 use Symfony\Component\Console\Output\NullOutput;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 use Symfony\Component\Process\Process;
+use TheCadien\Bundle\SuluImportExportBundle\Helper\DbConnectionParamsNormalizer;
 use TheCadien\Bundle\SuluImportExportBundle\Helper\ImportExportDefaultMap;
 
 class ImportService implements ImportInterface
@@ -34,20 +35,27 @@ class ImportService implements ImportInterface
 
     /**
      * ImportCommand constructor.
+     *
+     * @param array $databaseParams
+     *        The database connection params for the connection. Should be passed
+     *        as an associative array with the key 'url' or with the keys 'host',
+     *        'user', 'dbname' and 'password'.
+     *        If an URL is used, it should follow the format
+     *        'mysql://<user>:<password>@<host>/<dbname>'.
      */
     public function __construct(
-        string $databaseHost,
-        string $databaseName,
-        string $databaseUser,
-        string $databasePassword,
+        array $databaseParams,
         string $importDirectory,
         string $uploadsDirectory,
         ExecuteService $executeService
     ) {
-        $this->databaseHost = $databaseHost;
-        $this->databaseUser = $databaseUser;
-        $this->databaseName = $databaseName;
-        $this->databasePassword = $databasePassword;
+        $databaseParams = DbConnectionParamsNormalizer::normalize($databaseParams);
+
+        $this->databaseHost = $databaseParams['host'];
+        $this->databaseUser = $databaseParams['user'];
+        $this->databaseName = $databaseParams['dbname'];
+        $this->databasePassword = $databaseParams['password'];
+
         $this->importDirectory = $importDirectory;
         $this->executeService = $executeService;
         $this->uploadsDirectory = ($uploadsDirectory) ?: ImportExportDefaultMap::SULU_DEFAULT_MEDIA_PATH;

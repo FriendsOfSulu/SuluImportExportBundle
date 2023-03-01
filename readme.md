@@ -29,13 +29,19 @@ composer require thecadien/sulu-import-export-bundle
 
 ### Configure the bundle 
 
-Configure arguments in your `.env` with your Database Config like the following way.
+If the doctrine database connection used by Sulu is not the 'default' DBAL
+connection you have to specify the connection name in the bundle's configuration.
+
+```yaml
+# config/packages/sulu_import_export.yaml
+
+sulu_import_export:
+    dbal_connection: default
+```
+
+Configure the import and export paths in your `.env` in the following way.
 
  ```dotenv
-DATABASE_HOST='host'
-DATABASE_USER='user'
-DATABASE_PASSWORD='password'
-DATABASE_NAME='db-name'
 MEDIA_PATH='var/uploads/media'
 
 IMPORT_DIR='var/import/'
