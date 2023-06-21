@@ -49,10 +49,7 @@ class ImportCommand extends Command
         $this->importService = $importService;
     }
 
-    /**
-     * @return void
-     */
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setName('sulu:import')
@@ -65,10 +62,7 @@ class ImportCommand extends Command
             );
     }
 
-    /**
-     * @return int
-     */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $this->input = $input;
         $this->output = $output;
