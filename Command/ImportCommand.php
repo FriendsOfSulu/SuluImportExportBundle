@@ -49,6 +49,9 @@ class ImportCommand extends Command
         $this->importService = $importService;
     }
 
+    /**
+     * @return void
+     */
     protected function configure()
     {
         $this
@@ -62,6 +65,9 @@ class ImportCommand extends Command
             );
     }
 
+    /**
+     * @return int
+     */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $this->input = $input;
