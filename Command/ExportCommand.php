@@ -46,20 +46,14 @@ class ExportCommand extends Command
         $this->exportService = $exportService;
     }
 
-    /**
-     * @return void
-     */
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setName('sulu:export')
             ->setDescription('Exports all Sulu contents (PHPCR, database, uploads) to the web directory.');
     }
 
-    /**
-     * @return int
-     */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $this->input = $input;
         $this->output = $output;

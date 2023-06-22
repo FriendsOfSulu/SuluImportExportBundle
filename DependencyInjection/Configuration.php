@@ -23,10 +23,8 @@ class Configuration implements ConfigurationInterface
 {
     /**
      * {@inheritdoc}
-     *
-     * @return TreeBuilder
      */
-    public function getConfigTreeBuilder()
+    public function getConfigTreeBuilder(): TreeBuilder
     {
         $treeBuilder = new TreeBuilder('import_export_bundle');
 

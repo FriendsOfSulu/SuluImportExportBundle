@@ -24,10 +24,8 @@ class DbConnectionPass implements CompilerPassInterface
 {
     /**
      * {@inheritDoc}
-     *
-     * @return void
      */
-    public function process(ContainerBuilder $container)
+    public function process(ContainerBuilder $container): void
     {
         $connectionName = $container->getParameter('sulu_import_export_bundle.dbal_connection');
 
