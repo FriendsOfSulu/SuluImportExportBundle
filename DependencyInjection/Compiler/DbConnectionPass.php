@@ -24,6 +24,8 @@ class DbConnectionPass implements CompilerPassInterface
 {
     /**
      * {@inheritDoc}
+     *
+     * @return void
      */
     public function process(ContainerBuilder $container)
     {

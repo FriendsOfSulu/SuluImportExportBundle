@@ -46,6 +46,9 @@ class ExportCommand extends Command
         $this->exportService = $exportService;
     }
 
+    /**
+     * @return void
+     */
     protected function configure()
     {
         $this
@@ -53,6 +56,9 @@ class ExportCommand extends Command
             ->setDescription('Exports all Sulu contents (PHPCR, database, uploads) to the web directory.');
     }
 
+    /**
+     * @return int
+     */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $this->input = $input;
