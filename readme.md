@@ -1,4 +1,4 @@
-##Requirements
+## Requirements
 
 * PHP >= 7.3 
 * Sulu 2.*
@@ -48,11 +48,9 @@ IMPORT_DIR='var/import/'
 EXPORT_DIR='var/export/'
  ```
 
+## UPGRADE
 
-
-##UPGRADE
-
-###1.1.1
+### 1.1.1
 
 Since version 1.1.1 it should be possible to change the path of the export and import easily.
 For this the ENV must be extended by the following variables.
