@@ -3,19 +3,19 @@
 declare(strict_types=1);
 
 /*
- * This file is part of TheCadien/SuluImportExportBundle.
+ * This file is part of FriendsOfSulu/SuluImportExportBundle.
  *
- * (c) Oliver Kossin
+ * (c) FriendsOfSulu
  *
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
  */
 
-namespace TheCadien\Bundle\SuluImportExportBundle;
+namespace FriendsOfSulu\Bundle\SuluImportExportBundle;
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
-use TheCadien\Bundle\SuluImportExportBundle\DependencyInjection\Compiler\DbConnectionPass;
+use FriendsOfSulu\Bundle\SuluImportExportBundle\DependencyInjection\Compiler\DbConnectionPass;
 
 class SuluImportExportBundle extends Bundle
 {

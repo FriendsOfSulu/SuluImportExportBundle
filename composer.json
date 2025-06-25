@@ -1,9 +1,9 @@
 {
-  "name": "thecadien/sulu-import-export-bundle",
+  "name": "friendsofsulu/sulu-import-export-bundle",
   "type": "sulu-bundle",
   "description": "Import/Export Bundle for Sulu 2 CMS",
   "keywords": ["sulu","suluCms","import","export"],
-  "homepage": "https://github.com/TheCadien/SuluImportExportBundle",
+  "homepage": "https://github.com/FriendsOfSulu/SuluImportExportBundle",
   "license": "MIT",
   "authors": [
     {
@@ -50,7 +50,7 @@
   },
   "autoload": {
     "psr-4": {
-      "TheCadien\\Bundle\\SuluImportExportBundle\\": ""
+      "FriendsOfSulu\\Bundle\\SuluImportExportBundle\\": ""
     }
   },
   "config": {

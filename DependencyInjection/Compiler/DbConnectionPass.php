@@ -3,15 +3,15 @@
 declare(strict_types=1);
 
 /*
- * This file is part of TheCadien/SuluImportExportBundle.
+ * This file is part of FriendsOfSulu/SuluImportExportBundle.
  *
- * (c) Oliver Kossin
+ * (c) FriendsOfSulu
  *
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
  */
 
-namespace TheCadien\Bundle\SuluImportExportBundle\DependencyInjection\Compiler;
+namespace FriendsOfSulu\Bundle\SuluImportExportBundle\DependencyInjection\Compiler;
 
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;

@@ -12,7 +12,7 @@ project:
 
 ```bash
 
-composer require thecadien/sulu-import-export-bundle
+composer require friendsofsulu/sulu-import-export-bundle
 
 ```
 
@@ -23,7 +23,7 @@ composer require thecadien/sulu-import-export-bundle
  ```php
  return [
      /* ... */
-     TheCadien\Bundle\SuluImportExportBundle\SuluImportExportBundle::class => ['all' => true],
+     FriendsOfSulu\Bundle\SuluImportExportBundle\SuluImportExportBundle::class => ['all' => true],
  ];
  ```
 
@@ -60,3 +60,15 @@ To map the same function as in the 1.0.0 version it is sufficient to leave the v
 IMPORT_DIR=
 EXPORT_DIR=
  ```
+
+### 2.1.0
+
+All namespaces have been renamed. 
+
+```php
+#old
+TheCadien\Bundle\SuluImportExportBundle\
+
+#new
+FriendsOfSulu\Bundle\SuluImportExportBundle\
+```

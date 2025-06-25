@@ -3,21 +3,21 @@
 declare(strict_types=1);
 
 /*
- * This file is part of TheCadien/SuluImportExportBundle.
+ * This file is part of FriendsOfSulu/SuluImportExportBundle.
  *
- * (c) Oliver Kossin
+ * (c) FriendsOfSulu
  *
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
  */
 
-namespace TheCadien\Bundle\SuluImportExportBundle\Service;
+namespace FriendsOfSulu\Bundle\SuluImportExportBundle\Service;
 
 use Symfony\Component\Console\Output\NullOutput;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 use Symfony\Component\Process\Process;
-use TheCadien\Bundle\SuluImportExportBundle\Helper\DbConnectionParamsNormalizer;
-use TheCadien\Bundle\SuluImportExportBundle\Helper\ImportExportDefaultMap;
+use FriendsOfSulu\Bundle\SuluImportExportBundle\Helper\DbConnectionParamsNormalizer;
+use FriendsOfSulu\Bundle\SuluImportExportBundle\Helper\ImportExportDefaultMap;
 
 class ImportService implements ImportInterface
 {
