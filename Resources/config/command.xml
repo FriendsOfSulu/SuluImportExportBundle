@@ -3,11 +3,11 @@
            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
            xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
     <services>
-        <service id="sulu.command.import" class="TheCadien\Bundle\SuluImportExportBundle\Command\ImportCommand">
+        <service id="sulu.command.import" class="FriendsOfSulu\Bundle\SuluImportExportBundle\Command\ImportCommand">
             <argument key="$importService" type="service" id="sulu.service.import"/>
             <tag name="console.command"/>
         </service>
-        <service id="sulu.command.export" class="TheCadien\Bundle\SuluImportExportBundle\Command\ExportCommand">
+        <service id="sulu.command.export" class="FriendsOfSulu\Bundle\SuluImportExportBundle\Command\ExportCommand">
             <argument key="$exportService" type="service" id="sulu.service.export"/>
             <tag name="console.command"/>
         </service>

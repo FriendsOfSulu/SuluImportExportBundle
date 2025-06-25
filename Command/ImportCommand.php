@@ -3,21 +3,21 @@
 declare(strict_types=1);
 
 /*
- * This file is part of TheCadien/SuluImportExportBundle.
+ * This file is part of FriendsOfSulu/SuluImportExportBundle.
  *
- * (c) Oliver Kossin
+ * (c) FriendsOfSulu
  *
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
  */
 
-namespace TheCadien\Bundle\SuluImportExportBundle\Command;
+namespace FriendsOfSulu\Bundle\SuluImportExportBundle\Command;
 
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use TheCadien\Bundle\SuluImportExportBundle\Service\ImportInterface;
+use FriendsOfSulu\Bundle\SuluImportExportBundle\Service\ImportInterface;
 
 class ImportCommand extends Command
 {
