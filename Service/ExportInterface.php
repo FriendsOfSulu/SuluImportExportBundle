@@ -15,9 +15,9 @@ namespace FriendsOfSulu\Bundle\SuluImportExportBundle\Service;
 
 interface ExportInterface
 {
-    public function exportPHPCR();
+    public function exportPHPCR(): void;
 
-    public function exportDatabase();
+    public function exportDatabase(): void;
 
-    public function exportUploads();
+    public function exportUploads(): void;
 }

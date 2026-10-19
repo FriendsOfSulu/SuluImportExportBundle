@@ -13,11 +13,11 @@ declare(strict_types=1);
 
 namespace FriendsOfSulu\Bundle\SuluImportExportBundle\Command;
 
+use FriendsOfSulu\Bundle\SuluImportExportBundle\Service\ExportInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use FriendsOfSulu\Bundle\SuluImportExportBundle\Service\ExportInterface;
 
 class ExportCommand extends Command
 {
@@ -40,7 +40,7 @@ class ExportCommand extends Command
     private $exportService;
 
     public function __construct(
-        ExportInterface $exportService
+        ExportInterface $exportService,
     ) {
         parent::__construct();
         $this->exportService = $exportService;
@@ -50,7 +50,7 @@ class ExportCommand extends Command
     {
         $this
             ->setName('sulu:export')
-            ->setDescription('Exports all Sulu contents (PHPCR, database, uploads) to the web directory.');
+            ->setDescription('Exports Sulu contents (database and uploads, plus the PHPCR workspace when available).');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int

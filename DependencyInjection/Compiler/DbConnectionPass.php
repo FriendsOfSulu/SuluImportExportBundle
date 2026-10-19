@@ -36,7 +36,7 @@ class DbConnectionPass implements CompilerPassInterface
         $connections = $container->getParameter('doctrine.connections');
 
         if (!isset($connections[$connectionName])) {
-            throw new \InvalidArgumentException(sprintf('There is no doctrine connection configured which is named "%s". Available names are "%s".', $connectionName, implode('", "', array_keys($connections))));
+            throw new \InvalidArgumentException(\sprintf('There is no doctrine connection configured which is named "%s". Available names are "%s".', $connectionName, implode('", "', array_keys($connections))));
         }
 
         $connectionId = $connections[$connectionName];

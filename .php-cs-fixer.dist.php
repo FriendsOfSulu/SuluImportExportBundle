@@ -9,11 +9,11 @@ This source file is subject to the MIT license that is bundled
 with this source code in the file LICENSE.
 EOF;
 
-$finder = PhpCsFixer\Finder::create()
-    ->exclude(['var/cache', 'var/coverage.php'])
+$finder = (new PhpCsFixer\Finder())
+    ->exclude(['var/cache', 'var/coverage.php', 'vendor'])
     ->in(__DIR__);
 
-return PhpCsFixer\Config::create()
+return (new PhpCsFixer\Config())
     ->setRiskyAllowed(true)
     ->setRules([
         '@Symfony' => true,
@@ -23,7 +23,7 @@ return PhpCsFixer\Config::create()
         'array_syntax' => ['syntax' => 'short'],
         'phpdoc_align' => false,
         'class_definition' => [
-            'multiLineExtendsEachSingleLine' => true,
+            'multi_line_extends_each_single_line' => true,
         ],
         'linebreak_after_opening_tag' => true,
         'declare_strict_types' => true,
