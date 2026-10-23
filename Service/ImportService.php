@@ -13,11 +13,11 @@ declare(strict_types=1);
 
 namespace FriendsOfSulu\Bundle\SuluImportExportBundle\Service;
 
+use FriendsOfSulu\Bundle\SuluImportExportBundle\Helper\DbConnectionParamsNormalizer;
+use FriendsOfSulu\Bundle\SuluImportExportBundle\Helper\ImportExportDefaultMap;
 use Symfony\Component\Console\Output\NullOutput;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 use Symfony\Component\Process\Process;
-use FriendsOfSulu\Bundle\SuluImportExportBundle\Helper\DbConnectionParamsNormalizer;
-use FriendsOfSulu\Bundle\SuluImportExportBundle\Helper\ImportExportDefaultMap;
 
 class ImportService implements ImportInterface
 {
@@ -47,7 +47,7 @@ class ImportService implements ImportInterface
         array $databaseParams,
         string $importDirectory,
         string $uploadsDirectory,
-        ExecuteService $executeService
+        ExecuteService $executeService,
     ) {
         $databaseParams = DbConnectionParamsNormalizer::normalize($databaseParams);
 
@@ -61,8 +61,14 @@ class ImportService implements ImportInterface
         $this->uploadsDirectory = ($uploadsDirectory) ?: ImportExportDefaultMap::SULU_DEFAULT_MEDIA_PATH;
     }
 
-    public function importPHPCR()
+    public function importPHPCR(): void
     {
+        // Sulu 3 stores all content in the database and no longer ships PHPCR.
+        // Only import the PHPCR workspace when the commands are still available.
+        if (!$this->executeService->hasCommand('doctrine:phpcr:workspace:import')) {
+            return;
+        }
+
         $this->executeService->executeCommand(
             'doctrine:phpcr:workspace:purge',
             [
@@ -79,7 +85,7 @@ class ImportService implements ImportInterface
         );
     }
 
-    public function importDatabase()
+    public function importDatabase(): void
     {
         $command =
             "mysql -h {$this->databaseHost} -u " . escapeshellarg($this->databaseUser) .
@@ -92,7 +98,7 @@ class ImportService implements ImportInterface
         }
     }
 
-    public function importUploads()
+    public function importUploads(): void
     {
         $filename = $this->importDirectory . \DIRECTORY_SEPARATOR . ImportExportDefaultMap::FILENAME_UPLOADS;
         $path = $this->uploadsDirectory . \DIRECTORY_SEPARATOR;

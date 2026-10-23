@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace FriendsOfSulu\Bundle\SuluImportExportBundle;
 
+use FriendsOfSulu\Bundle\SuluImportExportBundle\DependencyInjection\Compiler\DbConnectionPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
-use FriendsOfSulu\Bundle\SuluImportExportBundle\DependencyInjection\Compiler\DbConnectionPass;
 
 class SuluImportExportBundle extends Bundle
 {

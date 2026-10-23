@@ -30,7 +30,18 @@ class ExecuteService
         $this->application = new Application($kernel);
     }
 
-    public function executeCommand($cmd, array $params, OutputInterface $output)
+    /**
+     * Whether the given console command is available in the current application.
+     *
+     * Used to detect optional integrations (e.g. the PHPCR workspace commands,
+     * which no longer exist in Sulu 3).
+     */
+    public function hasCommand(string $name): bool
+    {
+        return $this->application->has($name);
+    }
+
+    public function executeCommand($cmd, array $params, OutputInterface $output): void
     {
         $command = $this->application->find($cmd);
         $command->run(

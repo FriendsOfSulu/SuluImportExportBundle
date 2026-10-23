@@ -15,9 +15,9 @@ namespace FriendsOfSulu\Bundle\SuluImportExportBundle\Service;
 
 interface ImportInterface
 {
-    public function importPHPCR();
+    public function importPHPCR(): void;
 
-    public function importDatabase();
+    public function importDatabase(): void;
 
-    public function importUploads();
+    public function importUploads(): void;
 }

@@ -1,61 +1,30 @@
 {
-  "name": "friendsofsulu/sulu-import-export-bundle",
-  "type": "sulu-bundle",
-  "description": "Import/Export Bundle for Sulu 2 CMS",
-  "keywords": ["sulu","suluCms","import","export"],
-  "homepage": "https://github.com/FriendsOfSulu/SuluImportExportBundle",
-  "license": "MIT",
-  "authors": [
-    {
-      "name": "Oliver Kossin"
-    }
-  ],
-  "require": {
-    "php": "^7.3|^8.0",
-    "doctrine/doctrine-bundle": ">=1.0",
-    "sulu/sulu": "^2.0.1",
-    "symfony/config": "^4.3 || ^5.0 || ^6.0 || ^7.0",
-    "symfony/dependency-injection": "^4.3 || ^5.0 || ^6.0 || ^7.0",
-    "symfony/framework-bundle": "^4.3 || ^5.0 || ^6.0 || ^7.0",
-    "symfony/http-foundation": "^4.3 || ^5.0 || ^6.0 || ^7.0",
-    "symfony/http-kernel": "^4.3 || ^5.0.7 || ^6.0 || ^7.0"
-  },
-  "require-dev": {
-    "coduo/php-matcher": "^4.0",
-    "handcraftedinthealps/code-coverage-checker": "^0.2.1",
-    "handcraftedinthealps/zendsearch": "^2.0",
-    "jackalope/jackalope-doctrine-dbal": "^1.3.4",
-    "jangregor/phpstan-prophecy": "^0.8",
-    "phpstan/phpstan": "^0.12",
-    "phpstan/phpstan-doctrine": "^0.12",
-    "phpstan/phpstan-phpunit": "^0.12",
-    "phpstan/phpstan-symfony": "^0.12",
-    "phpunit/phpunit": "^8.0",
-    "symfony/browser-kit": "^4.3 || ^5.0 || ^6.0 || ^7.0",
-    "symfony/console": "^4.3 || ^5.0 || ^6.0 || ^7.0",
-    "symfony/dotenv": "^4.3 || ^5.0 || ^6.0 || ^7.0",
-    "symfony/error-handler": "^4.4 || ^5.0 || ^6.0 || ^7.0",
-    "symfony/monolog-bundle": "^3.1",
-    "thecodingmachine/phpstan-strict-rules": "^0.12"
-  },
-  "scripts": {
-    "phpstan": [
-      "@php vendor/bin/phpstan analyse"
+    "name": "friendsofsulu/sulu-import-export-bundle",
+    "type": "sulu-bundle",
+    "description": "Import/Export Bundle for Sulu (database and uploads; PHPCR export/import when available)",
+    "keywords": ["sulu", "suluCms", "import", "export"],
+    "homepage": "https://github.com/FriendsOfSulu/SuluImportExportBundle",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Oliver Kossin"
+        }
     ],
-    "phpunit": "@php vendor/bin/phpunit",
-    "bootstrap-test-environment": [
-      "@php Tests/Application/bin/console doctrine:database:create --if-not-exists",
-      "@php Tests/Application/bin/console doctrine:schema:update --force"
-    ]
-  },
-  "autoload": {
-    "psr-4": {
-      "FriendsOfSulu\\Bundle\\SuluImportExportBundle\\": ""
+    "require": {
+        "php": "^8.2",
+        "doctrine/doctrine-bundle": "^2.4 || ^3.0",
+        "sulu/sulu": "^2.6 || ^3.0",
+        "symfony/config": "^5.4 || ^6.4 || ^7.0",
+        "symfony/console": "^5.4 || ^6.4 || ^7.0",
+        "symfony/dependency-injection": "^5.4 || ^6.4 || ^7.0",
+        "symfony/framework-bundle": "^5.4 || ^6.4 || ^7.0",
+        "symfony/http-foundation": "^5.4 || ^6.4 || ^7.0",
+        "symfony/http-kernel": "^5.4 || ^6.4 || ^7.0",
+        "symfony/process": "^5.4 || ^6.4 || ^7.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "FriendsOfSulu\\Bundle\\SuluImportExportBundle\\": ""
+        }
     }
-  },
-  "config": {
-    "allow-plugins": {
-      "composer/package-versions-deprecated": true
-    }
-  }
 }

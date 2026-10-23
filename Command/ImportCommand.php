@@ -13,11 +13,11 @@ declare(strict_types=1);
 
 namespace FriendsOfSulu\Bundle\SuluImportExportBundle\Command;
 
+use FriendsOfSulu\Bundle\SuluImportExportBundle\Service\ImportInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use FriendsOfSulu\Bundle\SuluImportExportBundle\Service\ImportInterface;
 
 class ImportCommand extends Command
 {
@@ -43,7 +43,7 @@ class ImportCommand extends Command
      * ImportCommand constructor.
      */
     public function __construct(
-        ImportInterface $importService
+        ImportInterface $importService,
     ) {
         parent::__construct();
         $this->importService = $importService;

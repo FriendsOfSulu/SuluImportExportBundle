@@ -13,11 +13,11 @@ declare(strict_types=1);
 
 namespace FriendsOfSulu\Bundle\SuluImportExportBundle\Service;
 
+use FriendsOfSulu\Bundle\SuluImportExportBundle\Helper\DbConnectionParamsNormalizer;
+use FriendsOfSulu\Bundle\SuluImportExportBundle\Helper\ImportExportDefaultMap;
 use Symfony\Component\Console\Output\NullOutput;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 use Symfony\Component\Process\Process;
-use FriendsOfSulu\Bundle\SuluImportExportBundle\Helper\DbConnectionParamsNormalizer;
-use FriendsOfSulu\Bundle\SuluImportExportBundle\Helper\ImportExportDefaultMap;
 
 class ExportService implements ExportInterface
 {
@@ -44,7 +44,7 @@ class ExportService implements ExportInterface
         array $databaseParams,
         string $exportDirectory,
         string $uploadsDirectory,
-        ExecuteService $executeService
+        ExecuteService $executeService,
     ) {
         $databaseParams = DbConnectionParamsNormalizer::normalize($databaseParams);
 
@@ -58,8 +58,14 @@ class ExportService implements ExportInterface
         $this->uploadsDirectory = ($uploadsDirectory) ?: ImportExportDefaultMap::SULU_DEFAULT_MEDIA_PATH;
     }
 
-    public function exportPHPCR()
+    public function exportPHPCR(): void
     {
+        // Sulu 3 stores all content in the database and no longer ships PHPCR.
+        // Only export the PHPCR workspace when the command is still available.
+        if (!$this->executeService->hasCommand('doctrine:phpcr:workspace:export')) {
+            return;
+        }
+
         $this->executeService->executeCommand(
             'doctrine:phpcr:workspace:export',
             [
@@ -70,7 +76,7 @@ class ExportService implements ExportInterface
         );
     }
 
-    public function exportDatabase()
+    public function exportDatabase(): void
     {
         $command =
             "mysqldump -h {$this->databaseHost} -u " . escapeshellarg($this->databaseUser) .
@@ -85,7 +91,7 @@ class ExportService implements ExportInterface
         }
     }
 
-    public function exportUploads()
+    public function exportUploads(): void
     {
         // Directory path with new Symfony directory structure - i.e. var/uploads.
         $process = Process::fromShellCommandline(

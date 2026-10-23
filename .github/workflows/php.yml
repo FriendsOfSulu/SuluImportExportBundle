@@ -5,41 +5,37 @@ on:
     push:
         branches:
             - master
+
 jobs:
     php-cs-fixer:
         name: Run php-cs-fixer
-        runs-on: ubuntu-18.04
+        runs-on: ubuntu-latest
 
         steps:
             - name: Checkout project
-              uses: actions/checkout@v1
+              uses: actions/checkout@v4
 
             - name: Install and configure PHP
               uses: shivammathur/setup-php@v2
               with:
-                php-version: '7.3'
-
-            - name: Create downloads directory
-              run: mkdir downloads
-
-            - name: Get downloads path
-              id: php-cs-fixer-dir
-              run: echo "::set-output name=dir::downloads"
-
-            - name: Get php-cs-fixer path
-              id: php-cs-fixer-path
-              run: echo "::set-output name=path::${{ steps.php-cs-fixer-dir.outputs.dir }}/php-cs-fixer.phar"
-
-            - name: Cache php-cs-fixer
-              id: php-cs-fixer-cache
-              uses: actions/cache@v1
-              with:
-                  path: ${{ steps.php-cs-fixer-dir.outputs.dir }}
-                  key: php-cs-fixer
-
-            - name: Download php-cs-fixer
-              if: steps.php-cs-fixer-cache.outputs.cache-hit != 'true'
-              run: curl "https://cs.symfony.com/download/php-cs-fixer-v2.phar" --output ${{ steps.php-cs-fixer-path.outputs.path }} && chmod +x ${{ steps.php-cs-fixer-path.outputs.path }}
+                php-version: '8.2'
+                tools: php-cs-fixer:3
 
             - name: Run php-cs-fixer
-              run: ./${{ steps.php-cs-fixer-path.outputs.path }} fix --dry-run --diff
+              run: php-cs-fixer fix --dry-run --diff
+
+    php-syntax:
+        name: Check PHP syntax
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Checkout project
+              uses: actions/checkout@v4
+
+            - name: Install and configure PHP
+              uses: shivammathur/setup-php@v2
+              with:
+                php-version: '8.2'
+
+            - name: Lint all PHP files
+              run: find . -path ./vendor -prune -o -name '*.php' -print0 | xargs -0 -n1 -P4 php -l

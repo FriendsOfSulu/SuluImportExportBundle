@@ -1,8 +1,15 @@
 ## Requirements
 
-* PHP >= 7.3 
-* Sulu 2.*
-* Symfony 4.4 / 5.* / 6
+* PHP >= 8.2
+* Sulu 2.6 or 3.0
+* Symfony 6.4 / 7.*
+
+### Sulu 3 compatibility
+
+Sulu 3 stores all content in the database and no longer ships PHPCR. On Sulu 3 the
+`sulu:export` / `sulu:import` commands therefore skip the PHPCR workspace automatically:
+they export and import the database and the uploads only. On Sulu 2.6 the PHPCR
+workspace is still exported and imported.
 
 
 ### Install the bundle 

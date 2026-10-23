@@ -36,7 +36,7 @@ class DbConnectionParamsNormalizer
             $diff = array_diff_key(['user', 'dbname'], $connectionParams);
 
             if (\count($diff) > 0) {
-                throw new \InvalidArgumentException(sprintf('The following keys are missing from the $connectionParams: ', implode(', ', $diff)));
+                throw new \InvalidArgumentException(\sprintf('The following keys are missing from the $connectionParams: ', implode(', ', $diff)));
             }
 
             return [
